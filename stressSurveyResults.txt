@@ -7,3 +7,19 @@ Wed Apr 28 21:55:54 2021: Selected 1, no stress
 Sun May  2 12:31:47 2021: Selected 3, somewhat stressed
 Sun May  2 12:32:15 2021: Selected 2, very little stress
 Sun May  2 22:13:38 2021: Selected 3, somewhat stressed
+Sun Nov 28 22:54:58 2021: Selected 1, no stress
+Sun Nov 28 22:57:33 2021: Selected 1, no stress
+Sun Nov 28 22:58:28 2021: Selected 5, very stressed/overwhelmed
+Sun Nov 28 23:49:42 2021: Selected 3, somewhat stressed
+Sun Nov 28 23:49:51 2021: Selected 1, no stress
+Sun Nov 28 23:51:25 2021: Selected 1, no stress
+Sun Nov 28 23:53:37 2021: Selected 1, no stress
+Sun Nov 28 23:53:50 2021: Selected 1, no stress
+Sun Nov 28 23:54:23 2021: Selected 3, somewhat stressed
+Sun Nov 28 23:56:41 2021: Selected 3, somewhat stressed
+Mon Nov 29 00:18:14 2021: Selected 1, no stress
+Mon Nov 29 03:32:18 2021: Selected 4, pretty stressed
+Tue Nov 30 01:45:28 2021: Selected 5, very stressed/overwhelmed
+Tue Nov 30 02:35:24 2021: Selected 2, very little stress
+Tue Dec 14 13:42:57 2021: Selected 4, pretty stressed
+Tue Dec 14 13:43:01 2021: Selected 5, very stressed/overwhelmed
