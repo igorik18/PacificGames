@@ -23,17 +23,20 @@ import shutil
 __author__ = "Hailey Johnson, Krikor Herlopian, Charitha Sree Jayaramireddy , Syrina Haldiman and Tatiyana Bramwell"
 __copyright__ = "Copyright 2021, University of New Haven Final Project"
 
+WIDTH = 650
+HEIGHT = 680
+
 level = 1  # number of tiles
 music_on = True
 # one place to store the positions of buttons and their text. Modify here to change their placing, without touching the logic.
-dictInstructionButton = {'text': "Instructions", 'x': 35, 'y': 125, 'w': 230, 'h': 60}
-dictUploadImageButton = {'text': "Upload Image", 'x': 35, 'y': 195, 'w': 230, 'h': 60}
-dictDownloadImageButton = {'text': "Download", 'x': 35, 'y': 265, 'w': 230, 'h': 60}
-dictSurveyButton = {'text': "Survey Results", 'x': 35, 'y': 335, 'w': 230, 'h': 60}
-dictLevelButton = {'text': "Level", 'x': 35, 'y': 405, 'w': 230, 'h': 60}
-dictBackButton = {'text': "Back", 'x': 300, 'y': 780, 'w': 100, 'h': 60}
-dictNextButton = {'text': "Next", 'x': 700, 'y': 780, 'w': 100, 'h': 60}
-dictPuzzleButton = {'text': "Play", 'x': 450, 'y': 780, 'w': 200, 'h': 60}
+dictInstructionButton = {'text': "Instructions", 'x': 0.04*WIDTH, 'y': 0.14*HEIGHT, 'w': 0.27*WIDTH, 'h': 0.07*HEIGHT}
+dictUploadImageButton = {'text': "Upload Image", 'x': 0.04*WIDTH, 'y': 0.22*HEIGHT, 'w': 0.27*WIDTH, 'h': 0.07*HEIGHT}
+dictDownloadImageButton = {'text': "Download", 'x': 0.04*WIDTH, 'y': 0.3*HEIGHT, 'w': 0.27*WIDTH, 'h': 0.07*HEIGHT}
+dictSurveyButton = {'text': "Survey Results", 'x': 0.04*WIDTH, 'y': 0.38*HEIGHT, 'w': 0.27*WIDTH, 'h': 0.07*HEIGHT}
+dictLevelButton = {'text': "Level", 'x': 0.04*WIDTH, 'y': 0.46*HEIGHT, 'w': 0.27*WIDTH, 'h': 0.07*HEIGHT}
+dictBackButton = {'text': "Back", 'x': 0.35*WIDTH, 'y': 0.88*HEIGHT, 'w': 0.12*WIDTH, 'h': 0.07*HEIGHT}
+dictNextButton = {'text': "Next", 'x': 0.82*WIDTH, 'y': 0.88*HEIGHT, 'w': 0.12*WIDTH, 'h': 0.07*HEIGHT}
+dictPuzzleButton = {'text': "Play", 'x': 0.53*WIDTH, 'y': 0.88*HEIGHT, 'w': 0.23*WIDTH, 'h': 0.07*HEIGHT}
 
 # list of images in basimages folder, and also downloaded from net.
 lstOfPics = []
@@ -53,8 +56,8 @@ def mainStart():
 	"""
     global background, window
     pygame.init()
-    size = (850, 880)
-    window = pygame.display.set_mode(size, pygame.SHOWN)
+    size = (WIDTH, HEIGHT)
+    window = pygame.display.set_mode(size, pygame.RESIZABLE)#pygame.SHOWN)
     pygame.display.set_caption('Завин ПАЗЛ')
 
     # icon = pygame.image.load("pacificicon.png").convert_alpha()
@@ -258,8 +261,8 @@ def gameloop():
         level = int(file.readline())
     index = 0
     while running:
-        if index == 4:
-            subprocess.check_output([sys.executable, "stressSurvey.py"])
+        # if index == 4:
+        #     subprocess.check_output([sys.executable, "stressSurvey.py"])
         index += 1
         window.fill((0, 0, 0))
         window.blit(background, (0, 0))
@@ -271,7 +274,7 @@ def gameloop():
                     play_stop_music()
             elif event.type == pygame.QUIT:
                 running = False
-                subprocess.check_output([sys.executable, "stressSurvey.py"])
+                # subprocess.check_output([sys.executable, "stressSurvey.py"])
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # user clicked next.Update selectedpath by 1.and redraw new image
                 if dictNextButton['x+w'] > mouse[0] > dictNextButton['x'] and dictNextButton['y+h'] > mouse[1] > \
@@ -319,13 +322,14 @@ def gameloop():
                 # survey
                 elif dictSurveyButton['x+w'] > mouse[0] > dictSurveyButton['x'] and dictSurveyButton['y+h'] > mouse[1] > \
                         dictSurveyButton['y']:
+                    pass
                     # open survey
-                    if platform.system() == 'Darwin':  # macOS
-                        subprocess.call(('open', "stressSurveyResults.txt"))  # could also use text file
-                    elif platform.system() == 'Windows':  # Windows
-                        os.startfile("stressSurveyResults.txt")
-                    else:  # linux variants
-                        subprocess.call(('xdg-open', "stressSurveyResults.txt"))
+                    # if platform.system() == 'Darwin':  # macOS
+                    #     subprocess.call(('open', "stressSurveyResults.txt"))  # could also use text file
+                    # elif platform.system() == 'Windows':  # Windows
+                    #     os.startfile("stressSurveyResults.txt")
+                    # else:  # linux variants
+                    #     subprocess.call(('xdg-open', "stressSurveyResults.txt"))
                 # user clicked level button to choose a new level
                 elif dictLevelButton['x+w'] > mouse[0] > dictLevelButton['x'] and dictLevelButton['y+h'] > mouse[1] > \
                         dictLevelButton['y']:

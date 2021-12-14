@@ -11,6 +11,7 @@ from random import randrange, choice, shuffle
 from glob import glob
 from PIL import Image
 import subprocess
+import numpy as np
 
 __author__ = "Hailey Johnson, Krikor Herlopian, Charitha Sree Jayaramireddy , Syrina Haldiman and Tatiyana Bramwell"
 __copyright__ = "Copyright 2021, University of New Haven Final Project"
@@ -20,12 +21,34 @@ blacktile = None
 playing = True
 postCongratulations = False
 
+rndnumbers = []
+
 
 def grab(screen, x, y, width, height):
     "Grab part of screen blit on => screenshot"
     sub = screen.subsurface(x, y, width, height)
     screenshot = pygame.Surface((width, height))
     screenshot.blit(sub, (0, 0))
+    j = x / width
+    i = y / height
+    n = Puzzle.width // width
+    font = pygame.font.Font(None, 20)
+    text = font.render(str(rndnumbers[int(i * n + j)]), True, [255, 255, 255])
+    screenshot.blit(text, (screenshot.get_width() / 2, screenshot.get_height() / 2))
+    return screenshot
+
+
+def blacktile_grab(x, y, width, height):
+    screenshot = pygame.Surface((width, height))
+    screenshot.fill(Puzzle.BLACKTILE)
+    j = x / width
+    i = y / height
+    n = Puzzle.width // width
+    firstword = int((i * n + j) / 25)
+    secondword = int((i * n + j) % 25)
+    font = pygame.font.Font(None, 20)
+    text = font.render(str(chr(65 + firstword) + chr(65 + secondword)), True, [255, 255, 255])
+    screenshot.blit(text, (screenshot.get_width() / 2, screenshot.get_height() / 2))
     return screenshot
 
 
@@ -280,7 +303,8 @@ class Event_listener():
 
 def create_puzzle():
     "Take the image and makes a puzzle, returns list of pieces and coordinates"
-    global puzzle, puzzle2, puzzle3, blacktile, coords, origcoords
+    global puzzle, puzzle2, puzzle3, blacktile, coords, origcoords, rndnumbers
+    rndnumbers = np.random.permutation((Puzzle.height // Tile.height) * (Puzzle.width // Tile.width))
     puzzle = []
     puzzle2 = []  # this will be shuffled
     puzzle3 = []
@@ -292,6 +316,7 @@ def create_puzzle():
         for n in range(Puzzle.width // Tile.width):
             # grab returns a Surface object
             tile = grab(Puzzle.screen, n * Tile.width, m * Tile.height, Tile.width, Tile.height)
+            blacktile = blacktile_grab(n * Tile.width, m * Tile.height, Tile.width, Tile.height)
             puzzle.append([order, tile])
             puzzle2.append([order, tile])
             puzzle3.append([order, blacktile])
@@ -325,7 +350,9 @@ def show_puzzleTwo():
     for num_tile, x, y in coords:
         blit(puzzle2[index][1], x + Puzzle.width // 2 + 7, y)
         index += 1
-    draw_grid()
+
+
+# draw_grid()
 
 
 def show_puzzleThree():
@@ -416,7 +443,7 @@ def start():
         try:
             if Event_listener.drag == 1:
                 Puzzle.screen.blit(Event_listener.tile, (
-                pygame.mouse.get_pos()[0] - Tile.width // 2, pygame.mouse.get_pos()[1] - Tile.height // 2))
+                    pygame.mouse.get_pos()[0] - Tile.width // 2, pygame.mouse.get_pos()[1] - Tile.height // 2))
         except:
             pass
         # User input
