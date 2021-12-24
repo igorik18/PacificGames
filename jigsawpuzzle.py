@@ -2,6 +2,7 @@
 """
 	The puzzle game.
 """
+import random
 
 import pygame
 import os
@@ -18,6 +19,7 @@ __copyright__ = "Copyright 2021, University of New Haven Final Project"
 
 imageSelected = ''
 blacktile = None
+blacktiles = None
 playing = True
 postCongratulations = False
 
@@ -38,7 +40,7 @@ def grab(screen, x, y, width, height):
     return screenshot
 
 
-def blacktile_grab(x, y, width, height):
+def blacktile_grab(x, y, width, height):#, screenshot):
     screenshot = pygame.Surface((width, height))
     screenshot.fill(Puzzle.BLACKTILE)
     j = x / width
@@ -226,9 +228,13 @@ class Event_listener():
                     if x > Puzzle.width // 2 + 7 and x < Puzzle.width * 2 - Puzzle.width // 2 + 7:
                         Event_listener.scenario = 1
                         coord = get_coordinates(event.pos)
+                        print(coord)
+                        print(puzzle2)
                         if puzzle2[coord[0]][1] == blacktile:
+                            print("1")
                             Event_listener.drag = 0
                         else:
+                            print("2")
                             # check if the mouse is over a tile and
                             # get it into Event...tile
                             puzzle_get = puzzle2[coord[0]][1]
@@ -241,19 +247,22 @@ class Event_listener():
                     elif x > Puzzle.width * 2 - Puzzle.width // 2 + 7:
                         Event_listener.scenario = 2
                         coord2 = get_coordinates2(event.pos)
+                        print(coord2)
                         # you picked the tile in the 3rd painting
-                        if puzzle[coord2[0]][1] == puzzle3[coord2[0]][1] or puzzle3[coord2[0]][1] == blacktile:
+                        if puzzle[coord2[0]][1] == puzzle3[coord2[0]][1] or puzzle3[coord2[0]] == blacktiles[coord2[0]]:
                             Event_listener.drag = 0
+                            print("3")
                         else:
+                            print("4")
                             Event_listener.pos3 = True
                             Event_listener.p3pos = coord2[0]
 
                             tile_in_3o = puzzle3[coord2[0]][1]
                             Event_listener.tile = tile_in_3o
-                            puzzle3[coord2[0]][1] = blacktile
+                            puzzle3[coord2[0]][1] = blacktiles[coord2[0]][1]
 
                             coord2 = get_coordinates2(event.pos)
-                            if puzzle3[coord2[0]][1] == blacktile:
+                            if puzzle3[coord2[0]][1] == blacktiles[coord2[0]][1]:
                                 puzzle_get = puzzle3[coord2[0]][1]
                     # back button clicked, making playing false so that user returns to main menu.
                     elif textRect.collidepoint(event.pos):
@@ -277,7 +286,7 @@ class Event_listener():
                         # Number of the tile where you are putting the piece
                         casella = puzzle3[coord2[0]]
                         tile3 = casella[1]
-                        if tile3 == blacktile:
+                        if casella in blacktiles:
                             Event_listener.drag = 0
                             puzzle3[coord2[0]][1] = Event_listener.tile
                             check_if_ok(Event_listener.tile, puzzle[coord2[0]][1], coord2[0])
@@ -303,11 +312,12 @@ class Event_listener():
 
 def create_puzzle():
     "Take the image and makes a puzzle, returns list of pieces and coordinates"
-    global puzzle, puzzle2, puzzle3, blacktile, coords, origcoords, rndnumbers
+    global puzzle, puzzle2, puzzle3, blacktile, blacktiles, coords, origcoords, rndnumbers
     rndnumbers = np.random.permutation((Puzzle.height // Tile.height) * (Puzzle.width // Tile.width))
     puzzle = []
     puzzle2 = []  # this will be shuffled
     puzzle3 = []
+    blacktiles = []
     coords = []
     blit(Puzzle.photo, 0, 0)
     pygame.display.update()
@@ -320,10 +330,12 @@ def create_puzzle():
             puzzle.append([order, tile])
             puzzle2.append([order, tile])
             puzzle3.append([order, blacktile])
+            blacktiles.append([order, blacktile])
             # The coordinates of the tiles
             coords.append([order, n * Tile.width, m * Tile.height])
             order += 1
     shuffle(puzzle2)
+    blacktile.fill(Puzzle.BLACKTILE)
     origcoords = coords[:]
 
 
@@ -436,6 +448,7 @@ def start():
     postCongratulations = False
     while playing:
         Puzzle.screen.fill((0, 0, 0))
+        #print(random.randint(0, 10))
         show_puzzleOne()
         show_puzzleTwo()
         show_puzzleThree()
