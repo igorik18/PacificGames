@@ -34,9 +34,10 @@ def grab(screen, x, y, width, height):
     j = x / width
     i = y / height
     n = Puzzle.width // width
-    font = pygame.font.Font(None, 20)
-    text = font.render(str(rndnumbers[int(i * n + j)]), True, [255, 255, 255])
-    screenshot.blit(text, (screenshot.get_width() / 2, screenshot.get_height() / 2))
+    font = pygame.font.Font(None, 30)
+    text = font.render(str(rndnumbers[int(i * n + j)]), True, [255, 0, 0])
+    t_w,t_h = font.size(str(rndnumbers[int(i * n + j)]))
+    screenshot.blit(text, ((screenshot.get_width() / 2) -t_w/2, (screenshot.get_height() / 2) -t_h/2))
     return screenshot
 
 
@@ -48,9 +49,10 @@ def blacktile_grab(x, y, width, height):#, screenshot):
     n = Puzzle.width // width
     firstword = int((i * n + j) / 25)
     secondword = int((i * n + j) % 25)
-    font = pygame.font.Font(None, 20)
-    text = font.render(str(chr(65 + firstword) + chr(65 + secondword)), True, [255, 255, 255])
-    screenshot.blit(text, (screenshot.get_width() / 2, screenshot.get_height() / 2))
+    font = pygame.font.Font(None, 30)
+    text = font.render(str(chr(65 + firstword) + chr(65 + secondword)), True, [255, 0, 0])
+    t_w, t_h = font.size(str(chr(65 + firstword) + chr(65 + secondword)))
+    screenshot.blit(text, ((screenshot.get_width() / 2) -t_w/2, (screenshot.get_height() / 2) -t_h/2))
     return screenshot
 
 
@@ -334,10 +336,25 @@ def create_puzzle():
             # The coordinates of the tiles
             coords.append([order, n * Tile.width, m * Tile.height])
             order += 1
-    shuffle(puzzle2)
+
+    puzzle2 = sort_puzzle(puzzle2)
+
+    #shuffle(puzzle2)
     blacktile.fill(Puzzle.BLACKTILE)
     origcoords = coords[:]
 
+def sort_puzzle(pzl):
+    for i in range(len(pzl)-1):
+        for j in range(len(pzl)-i-1):
+            if rndnumbers[j] > rndnumbers[j+1]:
+                bufp = pzl[j]
+                bufrnd = rndnumbers[j]
+                pzl[j] = pzl[j+1]
+                rndnumbers[j] = rndnumbers[j + 1]
+                pzl[j+1] = bufp
+                rndnumbers[j+1] = bufrnd
+    print(rndnumbers)
+    return pzl
 
 def show_puzzleOne():
     "This shows the puzzle, if sfl=1, shuffles it"
